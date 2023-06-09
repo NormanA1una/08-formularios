@@ -1,0 +1,78 @@
+<h4 class="mt-10 text-xl font-bold">
+  Formularios <small class="font-medium"> Template </small>
+</h4>
+<hr />
+
+<form autocomplete="off" (ngSubmit)="guardar(forma)" #forma="ngForm">
+  <div class="form mt-4 w-[500px]">
+    <mat-form-field class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input
+        matInput
+        type="text"
+        name="nombre"
+        [(ngModel)]="usuario.nombre"
+        required
+        minlength="5"
+        #nombre="ngModel"
+      />
+      <small
+        *ngIf="nombre.invalid && nombre.touched"
+        class="text-xs text-red-600"
+        >Ingrese 5 letras</small
+      >
+      <mat-icon color="warn" *ngIf="nombre.invalid && nombre.touched" matSuffix
+        >warning</mat-icon
+      >
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Apellido</mat-label>
+      <input
+        matInput
+        type="text"
+        name="apellido"
+        [(ngModel)]="usuario.apellido"
+        required
+        minlength="5"
+        #apellido="ngModel"
+      />
+      <small
+        *ngIf="apellido.invalid && apellido.touched"
+        class="text-xs text-red-600"
+        >Ingrese 5 letras</small
+      >
+      <mat-icon
+        color="warn"
+        *ngIf="apellido.invalid && apellido.touched"
+        matSuffix
+        >warning</mat-icon
+      >
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Correo Electrónico</mat-label>
+      <input
+        matInput
+        [(ngModel)]="usuario.email"
+        name="correo"
+        type="email"
+        required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+        #correo="ngModel"
+      />
+      <small
+        *ngIf="correo.invalid && correo.touched"
+        class="text-xs text-red-600"
+        >Ingrese un correo válido</small
+      >
+      <mat-icon color="warn" *ngIf="correo.invalid && correo.touched" matSuffix
+        >warning</mat-icon
+      >
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit" class="w-full">
+      Guardar
+    </button>
+  </div>
+</form>
