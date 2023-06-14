@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { PaisService } from 'src/app/services/pais.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-template',
@@ -9,17 +10,33 @@ import { PaisService } from 'src/app/services/pais.service';
 })
 export class TemplateComponent implements OnInit {
   usuario = {
-    nombre: '',
-    apellido: '',
-    email: '',
+    nombre: 'Norman',
+    apellido: 'Aranda',
+    email: 'normanluna32@gmail.com',
+    pais: 'NIC',
+    genero: 'M',
   };
 
-  constructor(private paisService: PaisService) {}
+  //llamado al servicio de paises
+  paisesSelect: any[] = [];
+
+  constructor(private paisService: PaisService, private router: Router) {}
 
   ngOnInit() {
     this.paisService.getPaises().subscribe((paises) => {
-      console.log(paises);
+      this.paisesSelect = paises;
+
+      this.paisesSelect.unshift({
+        nombre: '[Selecione un País]',
+        codigo: '',
+      });
+
+      //console.log(paises);
     });
+  }
+
+  cambiarFormulario() {
+    this.router.navigate(['reactive']);
   }
 
   guardar(forma: NgForm) {

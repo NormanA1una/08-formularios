@@ -1,25 +1,173 @@
-<h4 class="mt-10 text-xl font-bold">
-  Formularios <small class="font-medium"> Reactive </small>
-</h4>
-<hr />
+<div class="flex items-center">
+  <h4 class="mt-10 text-xl font-bold">
+    Formularios <small class="font-medium"> Template </small>
+  </h4>
+  <span class="flex-1"></span>
 
-<div class="form mt-4 w-[500px]">
-  <mat-form-field class="w-full">
-    <mat-label>Nombre</mat-label>
-    <input type="text" matInput />
-  </mat-form-field>
-
-  <mat-form-field class="w-full">
-    <mat-label>Apellido</mat-label>
-    <input type="text" matInput />
-  </mat-form-field>
-
-  <mat-form-field class="w-full">
-    <mat-label>Correo Electrónico</mat-label>
-    <input type="email" matInput />
-  </mat-form-field>
-
-  <button mat-raised-button color="accent" type="submit" class="w-full">
-    Guardar
+  <button
+    (click)="cambiarFormulario()"
+    mat-raised-button
+    color="primary"
+    type="button"
+  >
+    Formulario por Template
   </button>
 </div>
+<hr />
+
+<!-- Inicio del formulario -->
+<form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()">
+  <div class="form mt-4 w-[600px]">
+    <mat-form-field class="w-full">
+      <!-- Input del nombre -->
+      <mat-label>Nombre</mat-label>
+      <input type="text" matInput formControlName="nombre" />
+      <small *ngIf="nombreNoValido" class="text-xs text-red-600"
+        >El campo no puede estar vacío o es un nombre no valido</small
+      >
+      <mat-icon color="warn" *ngIf="nombreNoValido" matSuffix>warning</mat-icon>
+    </mat-form-field>
+
+    <!-- Input del apellido -->
+    <mat-form-field class="w-full">
+      <mat-label>Apellido</mat-label>
+      <input type="text" matInput formControlName="apellido" />
+      <small *ngIf="apellidoNoValido" class="text-xs text-red-600"
+        >Ingrese 5 letras como mínimo</small
+      >
+      <mat-icon color="warn" *ngIf="apellidoNoValido" matSuffix
+        >warning</mat-icon
+      >
+    </mat-form-field>
+
+    <!-- Input del correo -->
+    <mat-form-field class="w-full">
+      <mat-label>Correo Electrónico</mat-label>
+      <input type="email" matInput formControlName="correo" />
+      <small *ngIf="correoNoValido" class="text-xs text-red-600"
+        >Correo no válido</small
+      >
+      <mat-icon color="warn" *ngIf="correoNoValido" matSuffix>warning</mat-icon>
+    </mat-form-field>
+
+    <!-- Input del usuario -->
+    <mat-form-field class="w-full">
+      <mat-label>Usuairio</mat-label>
+      <input type="email" matInput formControlName="usuario" />
+      <small *ngIf="usuarioNoValido" class="text-xs text-red-600"
+        >Nombre de usuario no disponible</small
+      >
+      <mat-icon color="warn" *ngIf="usuarioNoValido" matSuffix
+        >warning</mat-icon
+      >
+    </mat-form-field>
+
+    <!-- Input de la contraseña -->
+    <mat-form-field class="w-full">
+      <mat-label>Contraseña</mat-label>
+      <input type="password" matInput formControlName="pass1" />
+      <small *ngIf="pass1NoValida" class="text-xs text-red-600"
+        >Ingrese la contraseña</small
+      >
+      <mat-icon color="warn" *ngIf="pass1NoValida" matSuffix>warning</mat-icon>
+    </mat-form-field>
+
+    <!-- Input de la contraseña 2 -->
+    <mat-form-field class="w-full">
+      <mat-label>Repita la Contraseña</mat-label>
+      <input type="password" matInput formControlName="pass2" />
+      <small *ngIf="pass2NoValida" class="text-xs text-red-600"
+        >La contraseña no coincide</small
+      >
+      <mat-icon color="warn" *ngIf="pass2NoValida" matSuffix>warning</mat-icon>
+    </mat-form-field>
+
+    <!-- Input de la dirección -->
+    <div class="text-base">Dirección</div>
+    <div class="w-full flex justify-between" formGroupName="direccion">
+      <mat-form-field class="mr-2 w-[48%]">
+        <mat-label>Distrito</mat-label>
+        <input matInput formControlName="distrito" />
+        <small *ngIf="distritoNoValido" class="text-xs text-red-600"
+          >Distrito no válido</small
+        >
+        <mat-icon color="warn" *ngIf="distritoNoValido" matSuffix
+          >warning</mat-icon
+        >
+      </mat-form-field>
+
+      <mat-form-field class="ml-2 w-[48%]">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad" />
+        <small *ngIf="ciudadNoValido" class="text-xs text-red-600"
+          >Ciudad no válido</small
+        >
+        <mat-icon color="warn" *ngIf="ciudadNoValido" matSuffix
+          >warning</mat-icon
+        >
+      </mat-form-field>
+    </div>
+
+    <!-- Tabla dinámica -->
+    <div class="w-full mb-4">
+      <table class="w-full">
+        <thead class="bg-slate-800 text-white">
+          <tr>
+            <th class="border border-slate-300">ID</th>
+            <th class="border border-slate-300">Pasatiempos</th>
+            <th class="border border-slate-300">Borrar</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="pasatiempos">
+          <tr *ngFor="let control of pasatiempos.controls; let i = index">
+            <td class="pl-2 border-b-[1px] border-slate-300">
+              {{ i + 1 }}
+            </td>
+            <td class="pl-2 pr-2 pb-2 pt-4 border-b-[1px] border-slate-300">
+              <mat-form-field class="w-full">
+                <input matInput type="text" [formControlName]="i" />
+              </mat-form-field>
+            </td>
+            <td class="text-center border-b-[1px] border-slate-300">
+              <button
+                (click)="borrarPasatiempo(i)"
+                mat-raised-button
+                color="warn"
+                type="button"
+              >
+                Borrar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button
+        (click)="agregarPasatiempo()"
+        mat-raised-button
+        color="primary"
+        class="w-full my-5"
+        type="button"
+      >
+        + Agregar
+      </button>
+    </div>
+
+    <!-- Botón para submit del formulario -->
+    <button mat-raised-button color="accent" type="submit" class="w-full">
+      Guardar
+    </button>
+  </div>
+</form>
+<br /><br />
+
+//Vista Previa
+<div>
+  <p>Estado del formulario: {{ forma.valid }}</p>
+  <br /><br />
+  <p>STATUS: {{ forma.status }}</p>
+  <br /><br />
+  <pre>{{ forma.value | json }}</pre>
+</div>
+
+<div class="h-10"></div>

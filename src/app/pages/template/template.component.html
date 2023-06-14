@@ -1,6 +1,18 @@
-<h4 class="mt-10 text-xl font-bold">
-  Formularios <small class="font-medium"> Template </small>
-</h4>
+<div class="flex items-center">
+  <h4 class="mt-10 text-xl font-bold">
+    Formularios <small class="font-medium"> Template </small>
+  </h4>
+  <span class="flex-1"></span>
+
+  <button
+    (click)="cambiarFormulario()"
+    mat-raised-button
+    color="primary"
+    type="button"
+  >
+    Formulario Reactivo
+  </button>
+</div>
 <hr />
 
 <form autocomplete="off" (ngSubmit)="guardar(forma)" #forma="ngForm">
@@ -16,6 +28,7 @@
         minlength="5"
         #nombre="ngModel"
       />
+
       <small
         *ngIf="nombre.invalid && nombre.touched"
         class="text-xs text-red-600"
@@ -70,6 +83,58 @@
         >warning</mat-icon
       >
     </mat-form-field>
+
+    <h4>País de Origen</h4>
+    <mat-form-field class="w-full">
+      <mat-label>Seleciona un País</mat-label>
+      <mat-select
+        [disabled]="paisesSelect.length === 0"
+        [(ngModel)]="usuario.pais"
+        name="pais"
+        required
+        #pais="ngModel"
+      >
+        <mat-option *ngFor="let pais of paisesSelect" [value]="pais.codigo">
+          {{ pais.nombre }}
+        </mat-option>
+      </mat-select>
+      <small *ngIf="pais.invalid && pais.touched" class="text-xs text-red-600"
+        >Selecione un país de la lista</small
+      >
+    </mat-form-field>
+
+    <section class="example-section">
+      <label class="example-margin">Genero:</label>
+      <mat-radio-group
+        name="genero"
+        [ngModel]="usuario.genero"
+        required
+        #genero="ngModel"
+      >
+        <mat-radio-button class="example-margin" value="M"
+          ><span [ngClass]="{ errorRadio: genero.invalid && genero.touched }"
+            >Masculino</span
+          ></mat-radio-button
+        >
+        <mat-radio-button class="example-margin" value="F"
+          ><span [ngClass]="{ errorRadio: genero.invalid && genero.touched }"
+            >Femenino</span
+          >
+        </mat-radio-button>
+      </mat-radio-group>
+      <small
+        *ngIf="genero.invalid && genero.touched"
+        class="text-xs text-red-600 ml-4"
+        >Selecione un genero</small
+      >
+      <mat-icon
+        class="ml-2"
+        *ngIf="genero.invalid && genero.touched"
+        color="warn"
+        aria-hidden="false"
+        fontIcon="warning"
+      ></mat-icon>
+    </section>
 
     <button mat-raised-button color="accent" type="submit" class="w-full">
       Guardar
